@@ -2,6 +2,7 @@
 
 const {Sequelize,DataTypes}=require("sequelize");
 const student=require("./student.model.js");
+const company=require("./company.model.js")
 const psql=process.env.DATABASE_URL
 
 let sequelizeOptions = process.env.NODE_ENV === 'production' ? {
@@ -17,5 +18,6 @@ const sequelize=new Sequelize(psql,sequelizeOptions);
 
 module.exports={
     db:sequelize,
-    student:student(sequelize,DataTypes)
+    student:student(sequelize,DataTypes),
+    company:company(sequelize,DataTypes)
 }

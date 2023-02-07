@@ -3,7 +3,7 @@ const express=require("express");
 const bcrypt=require("bcrypt");
 const base64=require("base-64")
 const router=express.Router();
-const {student}=require("../models/index.js");
+const {student}=require("../../models/index.js");
 
 router.post('/StudentSignup',signUp);
 router.post('/StudentSignin',signIn);

@@ -6,21 +6,13 @@ const jwt = require("jsonwebtoken");
 
 const secret = process.env.SECRET;
 
-const student = (sequelize, DataTypes) => {
-    const student = sequelize.define('student', {
+const company = (sequelize, DataTypes) => {
+    const company = sequelize.define('company', {
         id:{
             type:DataTypes.INTEGER,
             autoIncrement: true
         },
-        fname:{
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        sname:{
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        lname:{
+        name:{
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -32,18 +24,18 @@ const student = (sequelize, DataTypes) => {
         password: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        approvedby:{
-            type: DataTypes.INTEGER,
-            allowNull: true
-        },
-        skill:{
+        }, 
+        specialization: {
             type: DataTypes.STRING,
             allowNull: false
-        }, 
-        purl:{
+        },
+        country: {
             type: DataTypes.STRING,
-            allowNull: true
+            allowNull: false
+        },
+        city: {
+            type: DataTypes.STRING,
+            allowNull: false
         },
         role: {
             type: DataTypes.ENUM('unactive', 'active'),
@@ -63,7 +55,7 @@ const student = (sequelize, DataTypes) => {
             }
         }
     })
-    student.auth = async function (email, hashedPassword) {
+    company.auth = async function (email, hashedPassword) {
         try {
             let userD = await this.findOne({ where: { email: email } });
             if (userD) {
@@ -87,7 +79,7 @@ const student = (sequelize, DataTypes) => {
     }
 
 
-    return student;
+    return company;
 };
 
-module.exports = student;
+module.exports = company;
