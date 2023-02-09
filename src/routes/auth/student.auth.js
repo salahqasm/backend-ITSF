@@ -10,7 +10,7 @@ router.post('/StudentSignin',signIn);
 
 
 async function signUp(req,res){
-    let {email,password,fname,sname,lname,role}=req.body;
+    let {email,password,fname,sname,lname,skill,role}=req.body;
     let hashed=await bcrypt.hash(password,5);
     let userD=await student.findOne({where:{email:email}});
     if(!userD){
@@ -21,6 +21,7 @@ async function signUp(req,res){
                 fname:fname,
                 sname:sname,
                 lname:lname,
+                skill:skill,
                 role:role
             })
         }catch(err){
