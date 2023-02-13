@@ -6,13 +6,17 @@ const jwt = require("jsonwebtoken");
 
 const secret = process.env.SECRET;
 
-const instructor = (sequelize, DataTypes) => {
+const doctor = (sequelize, DataTypes) => {
     const doctor = sequelize.define('doctor', {
         id:{
             type:DataTypes.INTEGER,
             autoIncrement: true
         },
-        name:{
+        fname:{
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        lname:{
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -29,33 +33,28 @@ const instructor = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        country: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        city: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        role: {
-            type: DataTypes.ENUM('unactive', 'active'),
-            defaultValue: 'unactive'
+        department: {
+            type: DataTypes.STRING
         },
         token: {
             type: DataTypes.VIRTUAL
+        },
+        role: {
+            type: DataTypes.ENUM('admin', 'doctor'),
+            defaultValue: 'doctor'
         },
         actions:{
             type:DataTypes.VIRTUAL,
             get(){
                 const acl={
-                    unactive:['read'],
-                    active:['read','write','update','delete','send']
+                    admin:['read','write','update','delete','send'],
+                    doctor:['read','write','update','delete','send']
                 }
                 return acl[this.role];
             }
         }
     })
-    company.auth = async function (email, hashedPassword) {
+    doctor.auth = async function (email, hashedPassword) {
         try {
             let userD = await this.findOne({ where: { email: email } });
             if (userD) {
@@ -79,7 +78,7 @@ const instructor = (sequelize, DataTypes) => {
     }
 
 
-    return company;
+    return doctor;
 };
 
-module.exports = company;
+module.exports = doctor;

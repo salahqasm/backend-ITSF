@@ -1,19 +1,24 @@
 "use strict";
-
 const express=require("express");
 const app=express();
 const cors=require("cors");
+//error handeling middlewares
 const pageNotFound=require("./error-handlers/pageNotFound.js");
 const serverError=require("./error-handlers/serverError.js");
+//auth routes
+const companySignup=require("./routes/auth/company.signup.js")
+const studentSignup=require("./routes/auth/student.signup.js");
+const signin=require("./routes/auth/signin");
+
 const studentRoute=require("./routes/student.route.js");
-const companyAuthRoute=require("./routes/auth/company.auth")
-const logger=require("./middlewares/logger.js");
-const studentAuthRoute=require("./routes/auth/student.auth");
+const logger=require("./middlewares/logger.js");//testing middleware
+
 app.use(express.json());
 app.use(cors());
 app.use(logger);
-app.use(studentAuthRoute);
-app.use(companyAuthRoute);
+app.use(companySignup);
+app.use(studentSignup);
+app.use(signin);
 
 app.use(studentRoute); 
 
