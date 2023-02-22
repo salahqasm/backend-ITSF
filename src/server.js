@@ -8,6 +8,7 @@ const serverError=require("./error-handlers/serverError.js");
 //auth routes
 const companySignup=require("./routes/auth/company.signup.js")
 const studentSignup=require("./routes/auth/student.signup.js");
+const doctorSignup=require("./routes/auth/doctor.signup.js");
 const signin=require("./routes/auth/signin");
 
 const studentRoute=require("./routes/student.route.js");
@@ -18,6 +19,7 @@ app.use(cors());
 app.use(logger);
 app.use(companySignup);
 app.use(studentSignup);
+app.use(doctorSignup);
 app.use(signin);
 
 app.use(studentRoute); 
