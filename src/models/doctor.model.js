@@ -8,15 +8,15 @@ const secret = process.env.SECRET;
 
 const doctor = (sequelize, DataTypes) => {
     const doctor = sequelize.define('doctor', {
-        id:{
-            type:DataTypes.INTEGER,
+        id: {
+            type: DataTypes.INTEGER,
             autoIncrement: true
         },
-        fname:{
+        fname: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        lname:{
+        lname: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -28,7 +28,7 @@ const doctor = (sequelize, DataTypes) => {
         password: {
             type: DataTypes.STRING,
             allowNull: false
-        }, 
+        },
         specialization: {
             type: DataTypes.STRING,
             allowNull: false
@@ -43,12 +43,12 @@ const doctor = (sequelize, DataTypes) => {
             type: DataTypes.ENUM('admin', 'doctor'),
             defaultValue: 'doctor'
         },
-        actions:{
-            type:DataTypes.VIRTUAL,
-            get(){
-                const acl={
-                    admin:['read','write','update','delete','send'],
-                    doctor:['read','write','update','delete','send']
+        actions: {
+            type: DataTypes.VIRTUAL,
+            get() {
+                const acl = {
+                    admin: ['read', 'write', 'update', 'delete', 'send', 'admin'],
+                    doctor: ['read', 'write', 'update', 'delete', 'send']
                 }
                 return acl[this.role];
             }

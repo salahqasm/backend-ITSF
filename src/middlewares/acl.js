@@ -1,14 +1,15 @@
 'use strict';
-module.exports=(action)=>(req,res,next)=>{
-    try{
-        if(req.user.actions.includes(action)){
+module.exports = (action) => (req, res, next) => {
+    try {
+        if (req.user.actions.includes(action)) {
+            console.log("inside beraer");
             console.log(req.user.actions);
             next();
-        }else{
+        } else {
             next('access denied');
         }
-    }catch(err){
-        next({err});
+    } catch (err) {
+        next({ err });
     }
 }
 
