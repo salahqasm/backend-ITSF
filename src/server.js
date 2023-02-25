@@ -14,7 +14,7 @@ const doctorSignup = require("./routes/auth/doctor.signup.js");
 const signin = require("./routes/auth/signin");
 //admin routes
 const adminGetRoutes = require("./routes/admin-routes/admin-get");
-
+const adminDeleteRoutes= require("./routes/admin-routes/admin-delete")
 //trash
 const studentRoute = require("./routes/student.route.js");
 const logger = require("./middlewares/logger.js");//testing middleware
@@ -24,6 +24,8 @@ app.use(studentSignup);
 app.use(doctorSignup);
 app.use(signin);
 app.use(adminGetRoutes);
+app.use(adminDeleteRoutes);
+
 
 
 app.use(logger);
