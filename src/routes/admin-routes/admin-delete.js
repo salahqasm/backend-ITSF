@@ -5,7 +5,7 @@ const aclMiddleware = require('../../middlewares/acl.js');
 const router = express.Router();
 router.use(bearerauth);
 
-router.delete('/deletestudent', aclMiddleware('admin'), deleteStudent)
+router.delete('/deletestudent/:id', aclMiddleware('admin'), deleteStudent)
 router.delete('/deletecompany/:id', aclMiddleware('admin'), deleteCompany)
 router.delete('/deletedoctor/:id', aclMiddleware('admin'), deleteDoctor)
 
