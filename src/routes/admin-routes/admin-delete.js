@@ -5,9 +5,9 @@ const aclMiddleware = require('../../middlewares/acl.js');
 const router = express.Router();
 router.use(bearerauth);
 
-// router.get('/allstudents', aclMiddleware('admin'), getAllStudents)
+router.delete('/deletestudent', aclMiddleware('admin'), deleteStudent)
 router.delete('/deletecompany/:id', aclMiddleware('admin'), deleteCompany)
-// router.get('/alldoctors', aclMiddleware('admin'), getAllDoctors)
+router.delete('/deletedoctor/:id', aclMiddleware('admin'), deleteDoctor)
 
 async function deleteCompany(req, res) {
     try {
@@ -34,6 +34,54 @@ async function deleteCompany(req, res) {
     }
 }
 
+async function deleteDoctor(req, res) {
+    try {
+        let userD = await doctor.findOne({ where: { id: req.params.id } });
+        if (userD) {
+            await doctor.destroy({
+                where: { id: req.params.id },
+            });
+            await users.destroy({
+                where: { email: userD.email },
+            });
+            res.send({
+                "Status":"Success",
+                "message":`Doctor with id ${req.params.id} deleted successfuly.`
+            })
+        } else {
+            throw err;
+        }
+    } catch (err) {
+        console.log(err);
+        res.send({
+            "error": err
+        })
+    }
+}
 
+async function deleteStudent(req, res) {
+    try {
+        let userD = await student.findOne({ where: { id: req.params.id } });
+        if (userD) {
+            await student.destroy({
+                where: { id: req.params.id },
+            });
+            await users.destroy({
+                where: { email: userD.email },
+            });
+            res.send({
+                "Status":"Success",
+                "message":`Student with id ${req.params.id} deleted successfuly.`
+            })
+        } else {
+            throw err;
+        }
+    } catch (err) {
+        console.log(err);
+        res.send({
+            "error": err
+        })
+    }
+}
 
 module.exports = router;
