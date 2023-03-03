@@ -1,13 +1,9 @@
 'use strict';
 const express=require("express");
 const bcrypt=require("bcrypt");
-// const base64=require("base-64")
 const router=express.Router();
 const {doctor,users}=require("../../models/index.js");
-
 router.post('/DoctorSignup',signUp);
-// router.post('/CompanySignin',signIn);
-
 
 async function signUp(req,res){
     let {fname,lname,email,password,specialization,department,role}=req.body;

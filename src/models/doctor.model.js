@@ -36,6 +36,10 @@ const doctor = (sequelize, DataTypes) => {
         department: {
             type: DataTypes.STRING
         },
+        profilePicture: {
+            type: DataTypes.TEXT,
+            allowNull: true
+        },
         token: {
             type: DataTypes.VIRTUAL
         },

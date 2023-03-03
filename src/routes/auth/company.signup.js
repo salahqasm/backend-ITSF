@@ -1,39 +1,44 @@
 'use strict';
-const express=require("express");
-const bcrypt=require("bcrypt");
-// const base64=require("base-64")
-const router=express.Router();
-const {company,users}=require("../../models/index.js");
+const express = require("express");
+const bcrypt = require("bcrypt");
+const router = express.Router();
+const { company, users } = require("../../models/index.js");
+const jwt = require("jsonwebtoken");
+router.post('/CompanySignup', signUp);
 
-router.post('/CompanySignup',signUp);
-// router.post('/CompanySignin',signIn);
+require('dotenv').config();
+const secret = process.env.SECRET;
+async function signUp(req, res) {
+    let { name, email, password, specialization, country, city } = req.body;
+    let hashed = await bcrypt.hash(password, 5);
+    let comAcc = await company.findOne({ where: { email: email } });
+    let userAcc = await users.findOne({ where: { email: email } });
+    if (!comAcc && !userAcc) {
+        try {
+            const comAcc = await company.create({
+                name: name,
+                email: email,
+                password: hashed,
+                specialization: specialization,
+                country: country,
+                city: city,
 
-
-async function signUp(req,res){
-    let {name,email,password,specialization,country,city}=req.body;
-    let hashed=await bcrypt.hash(password,5);
-    let comAcc=await company.findOne({where:{email:email}});
-    let userAcc=await users.findOne({where:{email:email}});
-    if(!comAcc && !userAcc){
-        try{
-            await company.create({
-                name:name,
-                email:email,
-                password:hashed,
-                specialization:specialization,
-                country:country,
-                city:city
-            })
+            }).then(result => {
+                delete result.dataValues.password;
+                result.dataValues.token = jwt.sign({ email: email }, secret),
+                    result.dataValues.userType = "company";
+                res.send(result.dataValues);
+            });
             await users.create({
-                userType:"company",
-                email:email
+                userType: "company",
+                email: email
             })
-        }catch(err){
+
+        } catch (err) {
             console.log(err);
         }
-        res.status(201).json(email);
-    }else{
-        res.status(409).send("failed");
+    } else {
+        res.status(409).send("Failed");
     }
 }
 
@@ -53,4 +58,4 @@ async function signUp(req,res){
 // }
 
 
-module.exports=router;
+module.exports = router;

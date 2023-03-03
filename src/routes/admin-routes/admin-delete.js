@@ -19,10 +19,7 @@ async function deleteCompany(req, res) {
             await users.destroy({
                 where: { email: userD.email },
             });
-            res.send({
-                "Status":"Success",
-                "message":`company with id ${req.params.id} deleted successfuly.`
-            })
+            res.send(await company.findAll())
         } else {
             throw err;
         }
@@ -44,10 +41,7 @@ async function deleteDoctor(req, res) {
             await users.destroy({
                 where: { email: userD.email },
             });
-            res.send({
-                "Status":"Success",
-                "message":`Doctor with id ${req.params.id} deleted successfuly.`
-            })
+            res.send(await doctor.findAll())
         } else {
             throw err;
         }
@@ -69,10 +63,7 @@ async function deleteStudent(req, res) {
             await users.destroy({
                 where: { email: userD.email },
             });
-            res.send({
-                "Status":"Success",
-                "message":`Student with id ${req.params.id} deleted successfuly.`
-            })
+            res.send(await student.findAll())
         } else {
             throw err;
         }

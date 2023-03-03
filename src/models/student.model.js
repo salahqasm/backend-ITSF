@@ -8,19 +8,19 @@ const secret = process.env.SECRET;
 
 const student = (sequelize, DataTypes) => {
     const student = sequelize.define('student', {
-        id:{
-            type:DataTypes.INTEGER,
+        id: {
+            type: DataTypes.INTEGER,
             autoIncrement: true
         },
-        fname:{
+        fname: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        sname:{
+        sname: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        lname:{
+        lname: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -33,16 +33,20 @@ const student = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
-        approvedby:{
+        approvedby: {
             type: DataTypes.INTEGER,
             allowNull: true
         },
-        skill:{
+        skill: {
             type: DataTypes.STRING,
             allowNull: false
-        }, 
-        purl:{
+        },
+        purl: {
             type: DataTypes.STRING,
+            allowNull: true
+        },
+        profilePicture: {
+            type: DataTypes.TEXT,
             allowNull: true
         },
         role: {
@@ -52,12 +56,12 @@ const student = (sequelize, DataTypes) => {
         token: {
             type: DataTypes.VIRTUAL
         },
-        actions:{
-            type:DataTypes.VIRTUAL,
-            get(){
-                const acl={
-                    unactive:['read'],
-                    active:['read','write','update','delete','send']
+        actions: {
+            type: DataTypes.VIRTUAL,
+            get() {
+                const acl = {
+                    unactive: ['read'],
+                    active: ['read', 'write', 'update', 'delete', 'send']
                 }
                 return acl[this.role];
             }

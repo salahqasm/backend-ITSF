@@ -1,13 +1,13 @@
 'use strict';
 const express=require("express");
 const bcrypt=require("bcrypt");
-// const base64=require("base-64")
+const jwt = require("jsonwebtoken");
 const router=express.Router();
 const {student,users}=require("../../models/index.js");
-
 router.post('/StudentSignup',signUp);
-// router.post('/StudentSignin',signIn);
 
+require('dotenv').config();
+const secret = process.env.SECRET;
 
 async function signUp(req,res){
     let {email,password,fname,sname,lname,skill,role}=req.body;
@@ -16,14 +16,19 @@ async function signUp(req,res){
     let userAcc=await users.findOne({where:{email:email}});
     if(!studentAcc && !userAcc){
         try{
-            await student.create({
+           await student.create({
                 email:email,
                 password:hashed,
                 fname:fname,
                 sname:sname,
                 lname:lname,
                 skill:skill,
-                role:role
+                role:role,
+            }).then(result=>{
+                delete result.dataValues.password;
+                result.dataValues.token= jwt.sign({ email: email }, secret),
+                result.dataValues.userType = "student";
+                res.send(result.dataValues);
             })
             await users.create({
                 userType:"student",
@@ -32,7 +37,6 @@ async function signUp(req,res){
         }catch(err){
             console.log(err);
         }
-        res.status(201).json(email);
     }else{
         res.status(409).send("failed");
     }

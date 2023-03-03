@@ -8,11 +8,11 @@ const secret = process.env.SECRET;
 
 const company = (sequelize, DataTypes) => {
     const company = sequelize.define('company', {
-        id:{
-            type:DataTypes.INTEGER,
+        id: {
+            type: DataTypes.INTEGER,
             autoIncrement: true
         },
-        name:{
+        name: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -24,7 +24,7 @@ const company = (sequelize, DataTypes) => {
         password: {
             type: DataTypes.STRING,
             allowNull: false
-        }, 
+        },
         specialization: {
             type: DataTypes.STRING,
             allowNull: false
@@ -37,6 +37,10 @@ const company = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        profilePicture: {
+            type: DataTypes.TEXT,
+            allowNull:true
+        },
         role: {
             type: DataTypes.ENUM('unactive', 'active'),
             defaultValue: 'unactive'
@@ -44,12 +48,12 @@ const company = (sequelize, DataTypes) => {
         token: {
             type: DataTypes.VIRTUAL
         },
-        actions:{
-            type:DataTypes.VIRTUAL,
-            get(){
-                const acl={
-                    unactive:['read'],
-                    active:['read','write','update','delete','send']
+        actions: {
+            type: DataTypes.VIRTUAL,
+            get() {
+                const acl = {
+                    unactive: ['read'],
+                    active: ['read', 'write', 'update', 'delete', 'send']
                 }
                 return acl[this.role];
             }

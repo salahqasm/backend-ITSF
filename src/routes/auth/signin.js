@@ -18,26 +18,39 @@ async function signIn(req, res) {
             if (userD.userType == 'student') {
                 student.auth(email, hashedPassword).then(
                     result => {
-                        delete result.dataValues.password;
-                        result.dataValues.userType = "student";
-                        res.send(result.dataValues);
+                        try {
+
+                            delete result.dataValues.password;
+                            result.dataValues.userType = "student";
+                            res.send(result.dataValues);
+                        } catch (err) {
+                            res.send("Wrong Password")
+                        }
                     }
                 ).catch(err => { throw err; })
 
             } else if (userD.userType == 'company') {
                 company.auth(email, hashedPassword).then(
                     result => {
-                        delete result.dataValues.password;
-                        result.dataValues.userType = "company";
-                        res.send(result.dataValues);
+                        try {
+                            delete result.dataValues.password;
+                            result.dataValues.userType = "company";
+                            res.send(result.dataValues);
+                        } catch (err) {
+                            res.send("Wrong Password");
+                        }
                     }).catch(err => { throw err; })
             } else if (userD.userType == 'doctor') {
                 doctor.auth(email, hashedPassword).then(
                     result => {
-                        delete result.dataValues.password;
-                        
-                        result.dataValues.userType =result.dataValues.role=="admin"?"admin":"doctor";
-                        res.send(result.dataValues);
+                        try {
+                            delete result.dataValues.password;
+                            result.dataValues.userType = result.dataValues.role == "admin" ? "admin" : "doctor";
+                            res.send(result.dataValues);
+
+                        } catch (err) {
+                            res.send("Wrong Password")
+                        }
                     }).catch(err => { throw err; })
             } else {
                 console.log("ERROR");
