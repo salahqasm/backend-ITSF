@@ -37,9 +37,21 @@ const company = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false
         },
+        purl: {
+            type: DataTypes.TEXT,
+            allowNull: true
+        },
+        phoneNum: {
+            type: DataTypes.TEXT,
+            allowNull: true
+        },
+        about: {
+            type: DataTypes.TEXT,
+            allowNull: true
+        },
         profilePicture: {
             type: DataTypes.TEXT,
-            allowNull:true
+            allowNull: true
         },
         role: {
             type: DataTypes.ENUM('unactive', 'active'),

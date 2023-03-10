@@ -66,7 +66,7 @@ async function updateCompany(req, res) {
     }
 }
 async function updateDoctor(req, res) {
-    const { fname, lname, email, specialization, department, role } = req.body;
+    const {name, email, specialization, department, role } = req.body;
     let user = await users.findOne({ where: { email: email } });
     if (user && user.userType != "doctor") {
         res.send("Email already exists");
@@ -76,8 +76,7 @@ async function updateDoctor(req, res) {
             try {
                 let docAcc = await doctor.findOne({ where: { id: req.params.id } })
                 await doctor.update({
-                    fname: fname,
-                    lname: lname,
+                    name: name,
                     email: email,
                     specialization: specialization,
                     department: department,
@@ -101,8 +100,7 @@ async function updateDoctor(req, res) {
         try {
             let docAcc = await doctor.findOne({ where: { id: req.params.id } })
             await doctor.update({
-                fname: fname,
-                lname: lname,
+                name: name,
                 email: email,
                 specialization: specialization,
                 department: department,
@@ -122,7 +120,7 @@ async function updateDoctor(req, res) {
     }
 }
 async function updateStudent(req, res) {
-    const { fname, sname, lname, email, skill, approvedby, role } = req.body;
+    const { name, email, skill, approvedby, role } = req.body;
     let user = await users.findOne({ where: { email: email } });
     if (user && user.userType != "student") {
         res.send("Email already exists");
@@ -132,9 +130,7 @@ async function updateStudent(req, res) {
             try {
                 let stuAcc = await student.findOne({ where: { id: req.params.id } })
                 await student.update({
-                    fname: fname,
-                    sname: sname,
-                    lname: lname,
+                    name: name,
                     email: email,
                     skill: skill,
                     approvedby: approvedby,
@@ -158,9 +154,7 @@ async function updateStudent(req, res) {
         try {
             let stuAcc = await student.findOne({ where: { id: req.params.id } })
             await student.update({
-                fname: fname,
-                sname: sname,
-                lname: lname,
+                name: name,
                 email: email,
                 skill: skill,
                 approvedby: approvedby,

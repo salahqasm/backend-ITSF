@@ -1,43 +1,41 @@
 'use strict';
-const express=require("express");
-const bcrypt=require("bcrypt");
+const express = require("express");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const router=express.Router();
-const {student,users}=require("../../models/index.js");
-router.post('/StudentSignup',signUp);
+const router = express.Router();
+const { student, users } = require("../../models/index.js");
+router.post('/StudentSignup', signUp);
 
 require('dotenv').config();
 const secret = process.env.SECRET;
 
-async function signUp(req,res){
-    let {email,password,fname,sname,lname,skill,role}=req.body;
-    let hashed=await bcrypt.hash(password,5);
-    let studentAcc=await student.findOne({where:{email:email}});
-    let userAcc=await users.findOne({where:{email:email}});
-    if(!studentAcc && !userAcc){
-        try{
-           await student.create({
-                email:email,
-                password:hashed,
-                fname:fname,
-                sname:sname,
-                lname:lname,
-                skill:skill,
-                role:role,
-            }).then(result=>{
+async function signUp(req, res) {
+    let { email, password, name, skill, role } = req.body;
+    let hashed = await bcrypt.hash(password, 5);
+    let studentAcc = await student.findOne({ where: { email: email } });
+    let userAcc = await users.findOne({ where: { email: email } });
+    if (!studentAcc && !userAcc) {
+        try {
+            await student.create({
+                email: email,
+                password: hashed,
+                name: name,
+                skill: skill,
+                role: role,
+            }).then(result => {
                 delete result.dataValues.password;
-                result.dataValues.token= jwt.sign({ email: email }, secret),
-                result.dataValues.userType = "student";
+                result.dataValues.token = jwt.sign({ email: email }, secret),
+                    result.dataValues.userType = "student";
                 res.send(result.dataValues);
             })
             await users.create({
-                userType:"student",
-                email:email
+                userType: "student",
+                email: email
             })
-        }catch(err){
+        } catch (err) {
             console.log(err);
         }
-    }else{
+    } else {
         res.status(409).send("failed");
     }
 }
@@ -58,4 +56,4 @@ async function signUp(req,res){
 // }
 
 
-module.exports=router;
+module.exports = router;

@@ -12,11 +12,7 @@ const doctor = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             autoIncrement: true
         },
-        fname: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        lname: {
+        name: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -35,6 +31,18 @@ const doctor = (sequelize, DataTypes) => {
         },
         department: {
             type: DataTypes.STRING
+        },
+        purl: {
+            type: DataTypes.TEXT,
+            allowNull:true
+        },
+        phoneNum:{
+            type:DataTypes.TEXT,
+            allowNull:true
+        },
+        about: {
+            type: DataTypes.TEXT,
+            allowNull:true
         },
         profilePicture: {
             type: DataTypes.TEXT,

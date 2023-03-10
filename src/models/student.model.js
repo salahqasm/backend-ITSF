@@ -12,15 +12,7 @@ const student = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             autoIncrement: true
         },
-        fname: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        sname: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
-        lname: {
+        name: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -44,6 +36,22 @@ const student = (sequelize, DataTypes) => {
         purl: {
             type: DataTypes.STRING,
             allowNull: true
+        },
+        linkedin: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        github: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
+        about:{
+            type:DataTypes.TEXT,
+            allowNull:true
+        },
+        phoneNum:{
+            type:DataTypes.TEXT,
+            allowNull:true
         },
         profilePicture: {
             type: DataTypes.TEXT,

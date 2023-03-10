@@ -2,16 +2,16 @@
 const express = require("express");
 const router = express.Router();
 const { doctor, company, student } = require("../../models/index.js");
-const bearer=require("../../middlewares/bearer");
-router.use(bearer);
+const bearer = require("../../middlewares/bearer");
+// router.use(bearer);
 router.post('/profilePicture', profilePicture);
-router.post('/profilePicture/:id',getProfilePicture);
+router.post('/profilePicture/:id', getProfilePicture);
 // router.get('/profilePicture',getProfilePicure);
 async function profilePicture(req, res) {
     const { userType, id, profilePicture } = req.body;
     try {
         if (userType === "student") {
-            
+
             await student.update({
                 profilePicture: profilePicture
             }, { where: { id: id } })
@@ -39,17 +39,35 @@ async function getProfilePicture(req, res) {
         try {
             const profilePicture = await student.findOne({
                 attributes: ['profilePicture'],
-                where:{id:req.params.id}
+                where: { id: req.params.id }
             })
             res.send(profilePicture);
         } catch (err) {
             console.log(err);
             res.send("Error")
         }
-    } else if (userType === "company"&& req.params.id) {
-
-    } else if (userType === "doctor"&& req.params.id) {
-
+    } else if (userType === "company" && req.params.id) {
+        try {
+            const profilePicture = await company.findOne({
+                attributes: ['profilePicture'],
+                where: { id: req.params.id }
+            })
+            res.send(profilePicture);
+        } catch (err) {
+            console.log(err);
+            res.send("Error")
+        }
+    } else if (userType === "doctor" && req.params.id) {
+        try {
+            const profilePicture = await doctor.findOne({
+                attributes: ['profilePicture'],
+                where: { id: req.params.id }
+            })
+            res.send(profilePicture);
+        } catch (err) {
+            console.log(err);
+            res.send("Error")
+        }
     }
 }
 

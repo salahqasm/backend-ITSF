@@ -6,7 +6,7 @@ const {doctor,users}=require("../../models/index.js");
 router.post('/DoctorSignup',signUp);
 
 async function signUp(req,res){
-    let {fname,lname,email,password,specialization,department,role}=req.body;
+    let {name,email,password,specialization,department,role}=req.body;
     if(!role){
         role="doctor";
     }
@@ -16,8 +16,7 @@ async function signUp(req,res){
     if(!docAcc && !userAcc){
         try{
             await doctor.create({
-                fname:fname,
-                lname:lname,
+                name:name,
                 email:email,
                 password:hashed,
                 specialization:specialization,

@@ -5,6 +5,7 @@ const users=require("./users.module.js")
 const student=require("./student.model.js");
 const company=require("./company.model.js")
 const doctor=require("./doctor.model.js")
+const feedback=require("./feedback.model.js")
 const psql=process.env.DATABASE_URL
 
 let sequelizeOptions = process.env.NODE_ENV === 'production' ? {
@@ -23,5 +24,6 @@ module.exports={
     student:student(sequelize,DataTypes),
     company:company(sequelize,DataTypes),
     users:users(sequelize,DataTypes),
-    doctor:doctor(sequelize,DataTypes)
+    doctor:doctor(sequelize,DataTypes),
+    feedback:feedback(sequelize,DataTypes)
 }

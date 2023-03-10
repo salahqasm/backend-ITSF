@@ -23,6 +23,11 @@ const profilePicture=require("./routes/profilePicture-route/profilePicture.js")
 //trash routes for testing
 const logger = require("./middlewares/logger.js");//testing middleware
 
+//doctor routes
+const doctor=require("./routes/doctor-routes/doctor")
+
+//feedback routes
+const feedback=require("./routes/feedback-routes/feedback.js")
 app.use(logger);
 
 //no bearer routes
@@ -32,12 +37,12 @@ app.use(studentSignup);
 app.use(doctorSignup);
 
 //bearer used
+app.use(doctor);
 app.use(adminGetRoutes);
 app.use(adminDeleteRoutes);
 app.use(adminUpdateoutes);
 app.use(profilePicture);
-
-
+app.use(feedback);
 
 
 
