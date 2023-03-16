@@ -12,6 +12,8 @@ const users = (sequelize, DataTypes) => {
             primaryKey: true
         }
 
+    }, {
+        timestamps: false
     })
 
     return users;

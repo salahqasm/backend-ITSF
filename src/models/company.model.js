@@ -70,6 +70,8 @@ const company = (sequelize, DataTypes) => {
                 return acl[this.role];
             }
         }
+    }, {
+        timestamps: false
     })
     company.auth = async function (email, hashedPassword) {
         try {

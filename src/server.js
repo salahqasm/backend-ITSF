@@ -22,7 +22,7 @@ const adminUpdateoutes=require("./routes/admin-routes/admin-update")
 const profilePicture=require("./routes/profilePicture-route/profilePicture.js")
 //trash routes for testing
 const logger = require("./middlewares/logger.js");//testing middleware
-
+const suka=require("./routes/suka.js")
 //doctor routes
 const doctor=require("./routes/doctor-routes/doctor")
 
@@ -35,7 +35,7 @@ app.use(signin);
 app.use(companySignup);
 app.use(studentSignup);
 app.use(doctorSignup);
-
+app.use(suka);
 //bearer used
 app.use(doctor);
 app.use(adminGetRoutes);

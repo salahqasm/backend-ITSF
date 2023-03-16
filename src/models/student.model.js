@@ -53,6 +53,11 @@ const student = (sequelize, DataTypes) => {
             type:DataTypes.TEXT,
             allowNull:true
         },
+        credit:{
+            type:DataTypes.INTEGER,
+            allowNull:true,
+            defaultValue: 0
+        },
         profilePicture: {
             type: DataTypes.TEXT,
             allowNull: true
@@ -74,6 +79,8 @@ const student = (sequelize, DataTypes) => {
                 return acl[this.role];
             }
         }
+    }, {
+        timestamps: false
     })
     student.auth = async function (email, hashedPassword) {
         try {

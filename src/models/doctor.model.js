@@ -65,6 +65,8 @@ const doctor = (sequelize, DataTypes) => {
                 return acl[this.role];
             }
         }
+    }, {
+        timestamps: false
     })
     doctor.auth = async function (email, hashedPassword) {
         try {
