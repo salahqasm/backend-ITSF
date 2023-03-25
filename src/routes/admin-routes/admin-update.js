@@ -120,7 +120,7 @@ async function updateDoctor(req, res) {
     }
 }
 async function updateStudent(req, res) {
-    const { name, email, skill, approvedby, role } = req.body;
+    const { name, email, approvedby, role } = req.body;
     let user = await users.findOne({ where: { email: email } });
     if (user && user.userType != "student") {
         res.send("Email already exists");
@@ -132,7 +132,6 @@ async function updateStudent(req, res) {
                 await student.update({
                     name: name,
                     email: email,
-                    skill: skill,
                     approvedby: approvedby,
                     role: role
                 }, {
@@ -156,7 +155,6 @@ async function updateStudent(req, res) {
             await student.update({
                 name: name,
                 email: email,
-                skill: skill,
                 approvedby: approvedby,
                 role: role
             }, {

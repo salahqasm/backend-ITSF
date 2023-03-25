@@ -3,8 +3,17 @@ require('dotenv').config();
 
 const skill = (sequelize, DataTypes) => {
     const skill = sequelize.define('skill', {
-        name:{
-            type:DataTypes.STRING,
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true
+        },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false
+        },
+        category: {
+            type: DataTypes.ENUM('Front-End', 'Back-End', 'Mobile Application', 'UI/UX', 'Image Processing', 'Multimedia'),
             allowNull: false
         }
     }, {

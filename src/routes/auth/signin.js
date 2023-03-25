@@ -13,7 +13,6 @@ async function signIn(req, res) {
         let userpassDecoded = base64.decode(userpassEncoded).split(':');
         let [email, hashedPassword] = userpassDecoded;
         let userD = await users.findOne({ where: { email: email } });
-        let obj = {};
         if (userD) {
             if (userD.userType == 'student') {
                 student.auth(email, hashedPassword).then(

@@ -2,7 +2,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-// app.use(express.json());
+
 app.use(express.json({limit: '50mb'})); // for images suka
 // app.use(express.urlencoded({limit: '50mb'}));
 app.use(cors());
@@ -25,7 +25,10 @@ const logger = require("./middlewares/logger.js");//testing middleware
 const suka=require("./routes/suka.js")
 //doctor routes
 const doctor=require("./routes/doctor-routes/doctor")
-
+//student routes
+const studentRoutes=require("./routes/student.routes/student")
+//skill routes
+const skillRoutes=require("./routes/skills.routes/skills")
 //feedback routes
 const feedback=require("./routes/feedback-routes/feedback.js")
 app.use(logger);
@@ -35,7 +38,10 @@ app.use(signin);
 app.use(companySignup);
 app.use(studentSignup);
 app.use(doctorSignup);
+app.use(skillRoutes)
+app.use(studentRoutes)
 app.use(suka);
+
 //bearer used
 app.use(doctor);
 app.use(adminGetRoutes);

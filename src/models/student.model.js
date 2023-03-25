@@ -29,10 +29,6 @@ const student = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: true
         },
-        skill: {
-            type: DataTypes.STRING,
-            allowNull: false
-        },
         purl: {
             type: DataTypes.STRING,
             allowNull: true
