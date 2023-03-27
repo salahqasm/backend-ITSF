@@ -3,10 +3,11 @@ const express = require("express");
 const router = express.Router();
 const { doctor, company, student } = require("../../models/index.js");
 const bearer = require("../../middlewares/bearer");
-// router.use(bearer);
+router.use(bearer);
 router.post('/profilePicture', profilePicture);
 router.post('/profilePicture/:id', getProfilePicture);
 // router.get('/profilePicture',getProfilePicure);
+
 async function profilePicture(req, res) {
     const { userType, id, profilePicture } = req.body;
     try {

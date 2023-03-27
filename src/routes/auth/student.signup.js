@@ -35,7 +35,7 @@ async function signUp(req, res) {
                 const row = await skill.findOne({ where: { id } });
                 await newStudent.addSkill(row);
             });
-            res.send(await student.findOne({where:{email:email},include:skill}));
+            res.send(newStudent);
             
         } catch (err) {
             console.log(err.message);
