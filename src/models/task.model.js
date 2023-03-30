@@ -16,9 +16,16 @@ const task = (sequelize, DataTypes) => {
             allowNull: true,
             defaultValue: 0
         },
+        status: {
+            type: DataTypes.ENUM('available', 'inprocess', 'done'),
+            defaultValue: 'available'
+        },
+        submission: {
+            type: DataTypes.TEXT
+        },
         date: {
             type: DataTypes.DATEONLY,
-            allowNull:true
+            allowNull: true
         }
     }, {
         timestamps: false
