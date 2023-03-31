@@ -26,9 +26,11 @@ const suka=require("./routes/suka.js")
 //doctor routes
 const doctor=require("./routes/doctor-routes/doctor")
 //student routes
-const studentRoutes=require("./routes/student.routes/student")
+const studentRoutes=require("./routes/student-routes/student")
+//company routes
+const companyRoutes=require("./routes/company-routes/company");
 //skill routes
-const skillRoutes=require("./routes/skills.routes/skills")
+const skillRoutes=require("./routes/skills-routes/skills")
 //feedback routes
 const feedback=require("./routes/feedback-routes/feedback.js")
 app.use(logger);
@@ -38,8 +40,9 @@ app.use(signin);
 app.use(companySignup);
 app.use(studentSignup);
 app.use(doctorSignup);
-app.use(skillRoutes)
-app.use(studentRoutes)
+app.use(skillRoutes);
+app.use(studentRoutes);
+app.use(companyRoutes);
 app.use(suka);
 
 //bearer used
