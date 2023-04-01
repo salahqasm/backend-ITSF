@@ -8,7 +8,11 @@ router.post('/addtask/:id', bearer, addTask)
 async function getCompany(req, res) {
     if (req.params.id) {
         try {
-            res.send(await company.findOne({ where: { id: req.params.id }, include: task }))
+            const response = await company.findOne({ where: { id: req.params.id }, include: { model: task, required: true } });
+            delete response.dataValues.password;
+            response.dataValues.userType = 'company';
+            res.send(response);
+
         } catch (err) {
             console.log(err.message);
             res.send(err.message);
