@@ -8,23 +8,29 @@ router.post('/addtask/:id', bearer, addTask)
 async function getCompany(req, res) {
     if (req.params.id) {
         try {
-            const response = await company.findOne({ where: { id: req.params.id }, include: { model: task, required: true } });
-            delete response.dataValues.password;
-            response.dataValues.userType = 'company';
-            res.send(response);
+            const response = await company.findOne({
+                where: { id: req.params.id },
+                attributes: { exclude: ['password'] },
+                include: {
+                model: task,
+                include: { model: skill }
+            }
+            });
+        response.dataValues.userType = 'company';
+        res.send(response);
 
-        } catch (err) {
-            console.log(err.message);
-            res.send(err.message);
-        }
-    } else {
-        try {
-            res.send(await company.findAll())
-        } catch (err) {
-            console.log(err.message);
-            res.send(err.message);
-        }
+    } catch (err) {
+        console.log(err.message);
+        res.send(err.message);
     }
+} else {
+    try {
+        res.send(await company.findAll())
+    } catch (err) {
+        console.log(err.message);
+        res.send(err.message);
+    }
+}
 }
 
 async function addTask(req, res) {
