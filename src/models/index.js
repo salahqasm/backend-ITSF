@@ -7,7 +7,7 @@ const feedback = require("./feedback.model.js");
 const studentModel = require("./student.model.js");
 const companyModel = require("./company.model.js");
 const taskModel = require("./task.model.js");
-const taskReqModel = require("./taskRequest.model.js");
+const taskReqModel = require("./taskReq.model.js");
 const skillModel = require("./skill.model.js");
 const studentskillsModel = require("./studentSkills.model.js")
 const taskSkillsModel = require("./taskSkills");
@@ -27,7 +27,7 @@ const company = companyModel(sequelize, DataTypes);
 const task = taskModel(sequelize, DataTypes);
 const skill = skillModel(sequelize, DataTypes);
 const studentskills = studentskillsModel(sequelize, DataTypes);
-const req = taskReqModel(sequelize, DataTypes);
+const taskReq = taskReqModel(sequelize, DataTypes);
 const taskSkills = taskSkillsModel(sequelize, DataTypes);
 
 student.belongsToMany(skill, { through: studentskills });
@@ -39,8 +39,8 @@ task.belongsTo(company);
 student.hasMany(task, { onDelete: "SET NULL", onUpdate: 'CASCADE' });
 task.belongsTo(student);
 
-student.belongsToMany(task, { through: req, as: "req", onDelete: "CASCADE" });
-task.belongsToMany(student, { through: req, as: "req" });
+student.belongsToMany(task, { through: taskReq, as: "request", onDelete: "CASCADE" });
+task.belongsToMany(student, { through: taskReq, as: "request" });
 
 task.belongsToMany(skill, { through: taskSkills });
 skill.belongsToMany(task, { through: taskSkills });
@@ -50,7 +50,7 @@ module.exports = {
   users: users(sequelize, DataTypes),
   doctor: doctor(sequelize, DataTypes),
   feedback: feedback(sequelize, DataTypes),
-  req,
+  taskReq,
   studentskills,
   skill,
   student,
