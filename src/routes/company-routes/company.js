@@ -5,7 +5,9 @@ const router = express.Router();
 
 router.get('/company/:id?', bearer, getCompany);
 router.post('/addtask/:id', bearer, addTask);
-router.delete('/deletetask/:id',bearer,deleteTask)
+router.delete('/deletetask/:id', bearer, deleteTask)
+router.put('/company/:id', bearer, updateCompany);
+
 async function getCompany(req, res) {
     if (req.params.id) {
         try {
@@ -14,7 +16,7 @@ async function getCompany(req, res) {
                 attributes: { exclude: ['password'] },
                 include: {
                     model: task,
-                    include: [{ model: skill }, { model: student, as: "request",attributes:{exclude:['password']} }]
+                    include: [{ model: skill }, { model: student, as: "request", attributes: { exclude: ['password'] } }]
                 }
             });
             response.dataValues.userType = 'company';
@@ -33,7 +35,25 @@ async function getCompany(req, res) {
         }
     }
 }
-
+async function updateCompany(req, res) {
+    try {
+        const { name, phoneNum, specialization, country, city, purl, about, picture } = req.body;
+        let result = company.update({
+            name: name,
+            phoneNum: phoneNum,
+            specialization: specialization,
+            country: country,
+            city: city,
+            purl: purl,
+            about: about,
+            profilePicture: picture
+        }, { where: { id: req.params.id } });
+        res.send("Success")
+    } catch (err) {
+        console.log(err.message);
+        res.send(err.message);
+    }
+}
 async function addTask(req, res) {
     try {
         const { title, description, credit, date, requiredSkills } = req.body;
@@ -59,7 +79,7 @@ async function addTask(req, res) {
 
 async function deleteTask(req, res) {
     try {
-        await task.destroy({where:{id:req.params.id}})
+        await task.destroy({ where: { id: req.params.id } })
         res.send("deleted")
     } catch (error) {
         console.log(error.message);
