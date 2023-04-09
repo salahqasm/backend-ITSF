@@ -7,10 +7,13 @@ router.post("/test", getDoctor);
 
 async function getDoctor(req, res) {
     try {
-        let tk=await task.findOne({where:{id:6}});
-        let s=await student.findAll();
-        await tk.addRequest(s);
-        res.send("success")
+        // let tk=await task.findOne({where:{title:"Wireframe"}});
+        // let s=await skill.findAll();
+        // await tk.addSkills(s);
+        // res.send("success")
+        const tk = await task.findOne({ where: { title: "First Edit task" }, include: { model: skill } });
+        // await tk.setSkills([]);
+        res.send(tk)
         // const taskReqList = await task.findAll({
         //     include:
         //     [{

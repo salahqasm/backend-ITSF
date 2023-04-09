@@ -7,6 +7,7 @@ router.get('/company/:id?', bearer, getCompany);
 router.post('/addtask/:id', bearer, addTask);
 router.delete('/deletetask/:id', bearer, deleteTask)
 router.put('/company/:id', bearer, updateCompany);
+router.put('/edittask/:id', bearer, updateTask);
 
 async function getCompany(req, res) {
     if (req.params.id) {
@@ -38,7 +39,7 @@ async function getCompany(req, res) {
 async function updateCompany(req, res) {
     try {
         const { name, phoneNum, specialization, country, city, purl, about, picture } = req.body;
-        let result = company.update({
+        let result = await company.update({
             name: name,
             phoneNum: phoneNum,
             specialization: specialization,
@@ -84,6 +85,27 @@ async function deleteTask(req, res) {
     } catch (error) {
         console.log(error.message);
         res.send(error.message);
+    }
+}
+async function updateTask(req, res) {
+    try {
+        const { title, description, credit, date, requiredSkills } = req.body;
+        let result = await task.update({
+            title: title,
+            description: description,
+            credit: credit,
+            date: date
+        }, { where: { id: req.params.id } });
+        let tk=await task.findOne({where:{id:req.params.id}});
+        await tk.setSkills([]);
+        requiredSkills.forEach(async id => {
+            const skl = await skill.findOne({ where: { id } });
+            await tk.addSkill(skl);
+        });
+        res.send("Success")
+    } catch (err) {
+        console.log(err.message);
+        res.send(err.message);
     }
 }
 module.exports = router;
