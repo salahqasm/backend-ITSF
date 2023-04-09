@@ -26,7 +26,7 @@ const student = (sequelize, DataTypes) => {
             allowNull: false
         },
         approvedby: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: true
         },
         purl: {
@@ -41,17 +41,17 @@ const student = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true
         },
-        about:{
-            type:DataTypes.TEXT,
-            allowNull:true
+        about: {
+            type: DataTypes.TEXT,
+            allowNull: true
         },
-        phoneNum:{
-            type:DataTypes.TEXT,
-            allowNull:true
+        phoneNum: {
+            type: DataTypes.TEXT,
+            allowNull: true
         },
-        credit:{
-            type:DataTypes.INTEGER,
-            allowNull:true,
+        credit: {
+            type: DataTypes.INTEGER,
+            allowNull: true,
             defaultValue: 0
         },
         profilePicture: {

@@ -2,8 +2,8 @@
 const { Sequelize, DataTypes } = require("sequelize");
 
 const users = require("./users.module.js")
-const doctor = require("./doctor.model.js")
 const feedback = require("./feedback.model.js");
+const doctorModel = require("./doctor.model.js")
 const studentModel = require("./student.model.js");
 const companyModel = require("./company.model.js");
 const taskModel = require("./task.model.js");
@@ -29,12 +29,17 @@ const skill = skillModel(sequelize, DataTypes);
 const studentskills = studentskillsModel(sequelize, DataTypes);
 const taskReq = taskReqModel(sequelize, DataTypes);
 const taskSkills = taskSkillsModel(sequelize, DataTypes);
+const doctor = doctorModel(sequelize, DataTypes);
+
+doctor.hasMany(student, { foreignKey: 'approvedby', onDelete: 'SET NULL' });
+student.belongsTo(doctor, { foreignKey: 'approvedby' });
 
 student.belongsToMany(skill, { through: studentskills });
 skill.belongsToMany(student, { through: studentskills })
 
 company.hasMany(task, { onDelete: "CASCADE", onUpdate: 'CASCADE' });
 task.belongsTo(company);
+
 
 student.hasMany(task, { onDelete: "SET NULL", onUpdate: 'CASCADE' });
 task.belongsTo(student);
@@ -48,8 +53,8 @@ skill.belongsToMany(task, { through: taskSkills });
 module.exports = {
   sequelize: sequelize,
   users: users(sequelize, DataTypes),
-  doctor: doctor(sequelize, DataTypes),
   feedback: feedback(sequelize, DataTypes),
+  doctor,
   taskReq,
   studentskills,
   skill,
