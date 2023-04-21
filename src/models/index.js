@@ -45,7 +45,7 @@ student.hasMany(task, { onDelete: "SET NULL", onUpdate: 'CASCADE' });
 task.belongsTo(student);
 
 student.belongsToMany(task, { through: taskReq, as: "request", onDelete: "CASCADE" });
-task.belongsToMany(student, { through: taskReq, as: "request" });
+task.belongsToMany(student, { through: taskReq, as: "request", onDelete: "CASCADE" });
 
 task.belongsToMany(skill, { through: taskSkills });
 skill.belongsToMany(task, { through: taskSkills });

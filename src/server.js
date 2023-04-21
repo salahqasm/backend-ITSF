@@ -29,6 +29,8 @@ const doctor = require("./routes/doctor-routes/doctor")
 const studentRoutes = require("./routes/student-routes/student")
 //company routes
 const companyRoutes = require("./routes/company-routes/company");
+//task routes
+const taskRoutes = require("./routes/task-routes/task.js")
 //skill routes
 const skillRoutes = require("./routes/skills-routes/skills")
 //feedback routes
@@ -41,6 +43,7 @@ app.use(signin);
 app.use(companySignup);
 app.use(studentSignup);
 app.use(skillRoutes);
+app.use(taskRoutes);
 app.use(suka);
 
 //bearer used
