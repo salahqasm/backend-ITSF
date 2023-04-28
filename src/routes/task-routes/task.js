@@ -5,12 +5,13 @@ const { task, skill, company, student } = require("../../models/index.js");
 
 
 router.get("/task", bearer, getTasks);
-router.post("/taskRequest", requestTask);
+router.post("/taskRequest", bearer, requestTask);
 
 
 async function getTasks(req, res) {
     try {
         let result = await task.findAll({
+            where: { status: "available" },
             include: [
                 { model: skill },
                 { model: company, attributes: { exclude: ['password'] } }

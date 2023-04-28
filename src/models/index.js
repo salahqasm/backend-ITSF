@@ -61,4 +61,5 @@ module.exports = {
   student,
   company,
   task,
+  taskReq
 }

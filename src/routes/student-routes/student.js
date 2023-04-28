@@ -2,10 +2,11 @@
 require('dotenv').config();
 const express = require("express");
 const router = express.Router();
-const { student, skill, task, doctor } = require("../../models/index.js");
+const { student, skill, task, doctor, taskReq } = require("../../models/index.js");
 const bearer = require("../../middlewares/bearer.js");
 router.get('/student/:id?', bearer, getStudent);
 router.put('/student/:id?', bearer, updateStudent);
+router.post('/deleteRequest', bearer, deleteRequest);
 async function getStudent(req, res) {
     if (req.params.id) {
         try {
@@ -17,7 +18,10 @@ async function getStudent(req, res) {
                         model: task,
                         include: { model: skill }
                     },
-                    { model: task, as: "request" },
+                    {
+                        model: task, as: "request",
+                        include: { model: skill }
+                    },
                     { model: skill },
                     { model: doctor, attributes: { exclude: ['password'] } }]
             });
@@ -56,6 +60,18 @@ async function updateStudent(req, res) {
             await st.addSkill(skl);
         });
         res.send("Success")
+    } catch (err) {
+        console.log(err.message);
+        res.send(err.message);
+    }
+}
+
+async function deleteRequest(req, res) {
+    try {
+        const { taskID, studentEmail } = req.body;
+        console.log(req.body);
+        let record = await taskReq.destroy({ where: { studentEmail: 'salah@email.com', taskId: taskID } });
+        res.send("success")
     } catch (err) {
         console.log(err.message);
         res.send(err.message);
