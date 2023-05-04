@@ -9,7 +9,7 @@ router.post('/CompanySignup', signUp);
 require('dotenv').config();
 const secret = process.env.SECRET;
 async function signUp(req, res) {
-    let { name, email, password, specialization, country, city } = req.body;
+    let { name, email, password, specialization, country, city ,purl,phoneNum,about,profilePicture} = req.body;
     let hashed = await bcrypt.hash(password, 5);
     let comAcc = await company.findOne({ where: { email: email } });
     let userAcc = await users.findOne({ where: { email: email } });
@@ -22,9 +22,15 @@ async function signUp(req, res) {
                 specialization: specialization,
                 country: country,
                 city: city,
+                purl:purl,
+                phoneNum:phoneNum,
+                about:about,
+                profilePicture:profilePicture
 
             }).then(result => {
                 delete result.dataValues.password;
+                delete result.dataValues.profilePicture;
+
                 result.dataValues.token = jwt.sign({ email: email }, secret),
                     result.dataValues.userType = "company";
                 res.send(result.dataValues);
