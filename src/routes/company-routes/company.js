@@ -1,6 +1,6 @@
 const express = require("express");
 const bearer = require("../../middlewares/bearer.js");
-const { company, task, skill, student } = require("../../models/index.js");
+const { company, task, skill, student, taskReq } = require("../../models/index.js");
 const router = express.Router();
 
 router.get('/company/:id?', bearer, getCompany);
@@ -8,7 +8,9 @@ router.post('/addtask/:id', bearer, addTask);
 router.delete('/deletetask/:id', bearer, deleteTask)
 router.put('/company/:id', bearer, updateCompany);
 router.put('/edittask/:id', bearer, updateTask);
-router.post('/paytask/:id',bearer,payTask)
+router.post('/paytask/:id', bearer, payTask);
+router.post('/acceptstudent/:id', bearer, acceptStudent);
+router.post('/denystudent/:id', bearer, denyStudent)
 async function getCompany(req, res) {
     if (req.params.id) {
         try {
@@ -96,7 +98,7 @@ async function updateTask(req, res) {
             credit: credit,
             date: date
         }, { where: { id: req.params.id } });
-        let tk=await task.findOne({where:{id:req.params.id}});
+        let tk = await task.findOne({ where: { id: req.params.id } });
         await tk.setSkills([]);
         requiredSkills.forEach(async id => {
             const skl = await skill.findOne({ where: { id } });
@@ -108,12 +110,34 @@ async function updateTask(req, res) {
         res.send(err.message);
     }
 }
-async function payTask(req,res){
+async function payTask(req, res) {
     try {
-        let tk=await task.findOne({where:{id:req.params.id}});
-        await tk.update({status:"done"});
-        let st=await student.findOne({where:{email:tk.studentEmail}});
-        st.update({credit:st.credit+tk.credit})
+        let tk = await task.findOne({ where: { id: req.params.id } });
+        await tk.update({ status: "done" });
+        let st = await student.findOne({ where: { email: tk.studentEmail } });
+        st.update({ credit: st.credit + tk.credit })
+        res.send("success");
+    } catch (err) {
+        console.log(err.message);
+        res.send(err.message);
+    }
+}
+async function acceptStudent(req, res) {
+    try {
+        let tk = await task.findOne({ where: { id: req.params.id } });
+        let std = await student.findOne({ where: { email: req.body.studentEmail } });
+        std.addTask(tk);
+        tk.setRequest([]);
+        tk.update({ status: "inprocess" });
+        res.send("success");
+    } catch (err) {
+        console.log(err.message);
+        res.send(err.message);
+    }
+}
+async function denyStudent(req, res) {
+    try {
+        let rqs = await taskReq.destroy({ where: { taskId: req.params.id, studentEmail: req.body.studentEmail } });
         res.send("success");
     } catch (err) {
         console.log(err.message);

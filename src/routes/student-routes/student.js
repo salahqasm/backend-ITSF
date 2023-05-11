@@ -7,6 +7,7 @@ const bearer = require("../../middlewares/bearer.js");
 router.get('/student/:id?', bearer, getStudent);
 router.put('/student/:id?', bearer, updateStudent);
 router.post('/deleteRequest', bearer, deleteRequest);
+router.get('/viewStudent/:id', viewStudent);
 async function getStudent(req, res) {
     if (req.params.id) {
         try {
@@ -38,6 +39,25 @@ async function getStudent(req, res) {
             console.log(err.message);
             res.send(err.message);
         }
+    }
+}
+async function viewStudent(req, res) {
+    try {
+        const response = await student.findOne({
+            where: { id: req.params.id },
+            attributes: { exclude: ['password'] },
+            include: [
+                {
+                    model: task,
+                    include: { model: skill }
+                },
+                { model: skill },
+                { model: doctor, attributes: { exclude: ['password'] } }]
+        });
+        res.send(response);
+    } catch (err) {
+        console.log(err.message);
+        res.send(err.message);
     }
 }
 async function updateStudent(req, res) {
