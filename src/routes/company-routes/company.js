@@ -8,7 +8,7 @@ router.post('/addtask/:id', bearer, addTask);
 router.delete('/deletetask/:id', bearer, deleteTask)
 router.put('/company/:id', bearer, updateCompany);
 router.put('/edittask/:id', bearer, updateTask);
-
+router.post('/paytask/:id',bearer,payTask)
 async function getCompany(req, res) {
     if (req.params.id) {
         try {
@@ -103,6 +103,18 @@ async function updateTask(req, res) {
             await tk.addSkill(skl);
         });
         res.send("Success")
+    } catch (err) {
+        console.log(err.message);
+        res.send(err.message);
+    }
+}
+async function payTask(req,res){
+    try {
+        let tk=await task.findOne({where:{id:req.params.id}});
+        await tk.update({status:"done"});
+        let st=await student.findOne({where:{email:tk.studentEmail}});
+        st.update({credit:st.credit+tk.credit})
+        res.send("success");
     } catch (err) {
         console.log(err.message);
         res.send(err.message);

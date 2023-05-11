@@ -6,7 +6,7 @@ const { task, skill, company, student } = require("../../models/index.js");
 
 router.get("/task", bearer, getTasks);
 router.post("/taskRequest", bearer, requestTask);
-
+router.put("/submittask/:id",bearer,submitHandler)
 
 async function getTasks(req, res) {
     try {
@@ -29,6 +29,16 @@ async function requestTask(req, res) {
         let { studentID, taskID } = req.body;
         const std = await student.findOne({ where: { id: studentID } });
         std.addRequest(taskID);
+        res.send("success");
+    } catch (err) {
+        console.log(err.message);
+        res.send(err.message)
+    }
+}
+async function submitHandler(req,res){
+    try {
+        let tk=await task.update({submission:req.body.submission},{where:{id:req.params.id}});
+        console.log(`Task Submitted: ${req.param.id} : ${req.body.submission}`);
         res.send("success");
     } catch (err) {
         console.log(err.message);
