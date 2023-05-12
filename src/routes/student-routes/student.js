@@ -8,6 +8,7 @@ router.get('/student/:id?', bearer, getStudent);
 router.put('/student/:id?', bearer, updateStudent);
 router.post('/deleteRequest', bearer, deleteRequest);
 router.get('/viewStudent/:id', viewStudent);
+router.post('/studentbyemail', bearer, getByEmail)
 async function getStudent(req, res) {
     if (req.params.id) {
         try {
@@ -34,11 +35,33 @@ async function getStudent(req, res) {
         }
     } else {
         try {
-            res.send(await student.findAll())
+            res.send(await student.findAll({
+                attributes: { exclude: ['password'] },
+                include: [
+                    {
+                        model: task,
+                        include: { model: skill }
+                    },
+                    { model: skill },
+                    { model: doctor, attributes: { exclude: ['password'] } }]
+            }))
         } catch (err) {
             console.log(err.message);
             res.send(err.message);
         }
+    }
+}
+async function getByEmail(req, res) {
+    try {
+        let std = await student.findOne({ where: { email: req.body.email }, include: [{ model: skill }, { model: doctor }], attributes: { exclude: ['password'] } })
+        if (std) {
+            res.send(std);
+        } else {
+            res.send("Not Found!");
+        }
+    } catch (err) {
+        console.log(err.message);
+        res.send(err.message);
     }
 }
 async function viewStudent(req, res) {
