@@ -31,7 +31,7 @@ async function getCompany(req, res) {
         }
     } else {
         try {
-            res.send(await company.findAll())
+            res.send(await company.findAll({ attributes: { exclude: ['password'] } }))
         } catch (err) {
             console.log(err.message);
             res.send(err.message);
