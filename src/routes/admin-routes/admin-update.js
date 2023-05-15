@@ -8,7 +8,7 @@ router.use(bearerauth);
 router.put('/updatestudent/:id', aclMiddleware('admin'), updateStudent)
 router.put('/updatecompany/:id', aclMiddleware('admin'), updateCompany)
 router.put('/updatedoctor/:id', aclMiddleware('admin'), updateDoctor)
-
+router.put('/activeCompany/:id', activeCompany);
 async function updateCompany(req, res) {
     const { name, email, specialization, country, city, role } = req.body;
     let user = await users.findOne({ where: { email: email } });
@@ -66,7 +66,7 @@ async function updateCompany(req, res) {
     }
 }
 async function updateDoctor(req, res) {
-    const {name, email, specialization, department, role } = req.body;
+    const { name, email, specialization, department, role } = req.body;
     let user = await users.findOne({ where: { email: email } });
     if (user && user.userType != "doctor") {
         res.send("Email already exists");
@@ -167,8 +167,19 @@ async function updateStudent(req, res) {
             })
             res.send("Success")
         } catch (err) {
-            console.log(err);
+            console.log(err.message);
+            res.send(err.message);
         }
+    }
+}
+async function activeCompany(req, res) {
+    try {
+        const cmp = await company.findOne({ where: { id: req.params.id } });
+        cmp.update({ role: "active" });
+        res.send(await company.findAll({ attributes: { exclude: ['password'] } }));
+    } catch (err) {
+        console.log(err.message);
+        res.send(err.message);
     }
 }
 module.exports = router;
