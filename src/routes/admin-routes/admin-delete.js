@@ -1,5 +1,5 @@
 const express = require("express");
-const { company, student, doctor, users } = require("../../models/index.js");
+const { company, student, doctor, users, task } = require("../../models/index.js");
 const bearerauth = require("../../middlewares/bearer.js")
 const aclMiddleware = require('../../middlewares/acl.js');
 const router = express.Router();
@@ -8,7 +8,7 @@ router.use(bearerauth);
 router.delete('/deletestudent/:id', aclMiddleware('admin'), deleteStudent)
 router.delete('/deletecompany/:id', aclMiddleware('admin'), deleteCompany)
 router.delete('/deletedoctor/:id', aclMiddleware('admin'), deleteDoctor)
-
+router.delete('/deleteTask/:id', deleteTask);
 async function deleteCompany(req, res) {
     try {
         let userD = await company.findOne({ where: { id: req.params.id } });
@@ -72,6 +72,16 @@ async function deleteStudent(req, res) {
         res.send({
             "error": err
         })
+    }
+}
+
+async function deleteTask(req, res) {
+    try {
+        let tk = await task.destroy({ where: { id: req.params.id } });
+        res.send("success");
+    } catch (err) {
+        console.log(err.message);
+        res.send(err.message);
     }
 }
 
