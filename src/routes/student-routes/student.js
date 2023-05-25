@@ -2,7 +2,7 @@
 require('dotenv').config();
 const express = require("express");
 const router = express.Router();
-const { student, skill, task, doctor, taskReq } = require("../../models/index.js");
+const { student, skill, task, doctor, taskReq, company } = require("../../models/index.js");
 const bearer = require("../../middlewares/bearer.js");
 router.get('/student/:id?', bearer, getStudent);
 router.put('/student/:id?', bearer, updateStudent);
@@ -18,11 +18,11 @@ async function getStudent(req, res) {
                 include: [
                     {
                         model: task,
-                        include: { model: skill }
+                        include: [{ model: skill }, { model: company, attributes: { exclude: ['password'] } }]
                     },
                     {
                         model: task, as: "request",
-                        include: { model: skill }
+                        include: [{ model: skill }, { model: company, attributes: { exclude: ['password'] } }]
                     },
                     { model: skill },
                     { model: doctor, attributes: { exclude: ['password'] } }]
